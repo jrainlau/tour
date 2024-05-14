@@ -146,9 +146,9 @@ export default class Smartour {
     return this
   }
 
-  run (isNext: boolean = true) {
+  run () {
     if (this.tourListLength && this.tourIndex < this.tourListLength - 1) {
-      isNext ? this.tourIndex++ : this.tourIndex--
+      this.tourIndex++
       const tour = this.tourList[this.tourIndex]
       if (tour.options) {
         this.options = { ...this.options, ...tour.options }
@@ -160,11 +160,16 @@ export default class Smartour {
   }
 
   next () {
-    this.run(true)
+    this.run()
   }
 
   prev () {
-    this.run(false)
+    if (this.tourIndex !== 0) this.tourIndex--
+    const tour = this.tourList[this.tourIndex]
+    if (tour.options) {
+      this.options = { ...this.options, ...tour.options }
+    }
+    this._show(tour.el, tour.slot, tour.keyNodes)
   }
 
   over () {
